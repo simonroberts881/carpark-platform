@@ -15,7 +15,7 @@ class BookingHelper
         //
     }
 
-    public function calculateParkingSpacesTaken($startDate, $endDate)
+    public function calculateParkingSpacesTaken($startDate, $endDate): int
     {
         $start = Carbon::parse($startDate);
         $end = Carbon::parse($endDate);
