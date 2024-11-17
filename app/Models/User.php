@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->hasMany(Vehicle::class);
     }
 
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
     /**
      * Determine if the user is an admin.
      */

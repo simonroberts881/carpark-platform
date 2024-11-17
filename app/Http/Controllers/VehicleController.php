@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreVehicleRequest;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class VehicleController extends Controller
         return view('vehicles.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreVehicleRequest $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -43,6 +44,13 @@ class VehicleController extends Controller
         ]);
 
         $vehicle->update($request->only('title'));
+
+        return redirect()->route('vehicles.home');
+    }
+
+    public function destroy(Vehicle $vehicle)
+    {
+        $vehicle->delete();
 
         return redirect()->route('vehicles.home');
     }
