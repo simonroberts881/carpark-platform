@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Vehicle;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +14,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Admin User
+        User::factory()->admin()->create([
+            'name' => 'Simon Roberts',
+            'email' => 'simon@bigboffin.com',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Client User
+        User::factory()->has(
+            Vehicle::factory()
+        )->create([
+            'name' => 'John Doe',
+            'email' => 'john@example.com'
         ]);
     }
 }
