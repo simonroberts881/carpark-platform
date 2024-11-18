@@ -17,6 +17,7 @@ class Booking extends Model
         'vehicle_id',
         'start_date',
         'end_date',
+        'cost',
     ];
 
     protected $casts = [

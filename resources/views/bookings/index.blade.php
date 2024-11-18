@@ -21,20 +21,26 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     @if(auth()->user()->bookings->count() > 0)
-                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <!-- Booking Card -->
-                        @foreach(auth()->user()->bookings as $booking)
-                        <div class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
-                            <div class="min-w-0 flex-1">
-                                <a href="#" class="focus:outline-none">
-                                    <span class="absolute inset-0" aria-hidden="true"></span>
-                                    <p class="text-sm font-medium text-gray-900">{{ auth()->user()->name }}</p>
-                                    <p class="truncate text-sm text-gray-500">{{ $booking->title }}</p>
-                                </a>
-                            </div>
+                        <div class="grid grid-cols-1 gap-4">
+                            <!-- Booking Card -->
+                            @foreach(auth()->user()->bookings as $booking)
+                                <div class="w-full flex px-4 py-3 border border-gray-500 rounded-md">
+                                    <div class="flex-1 flex items-center">
+                                        <a href="{{ route('bookings.edit', ['booking' => $booking]) }}">
+                                            {{ $booking->vehicle->title }} -
+                                            From: {{ $booking->start_date->format('d/m/y') }} - To: {{ $booking->end_date->format('d/m/y') }}
+                                            @ £{{ $booking->cost }}
+                                        </a>
+                                    </div>
+                                    <div class="flex-none">
+                                        <form action="{{ route('bookings.destroy', ['booking' => $booking]) }}">
+                                            @method('DELETE')
+                                            <x-danger-button>Delete</x-danger-button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                        @endforeach
-                    </div>
                     @else
                         <div class="text-center">
                             <svg class="mx-auto size-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

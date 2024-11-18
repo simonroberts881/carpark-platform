@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\BookingHelper;
+use AllowDynamicProperties;
+use App\Helpers\BookingHelper;
 use App\Http\Requests\StoreBookingRequest;
+use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 
+#[AllowDynamicProperties]
 class BookingController extends Controller
 {
 
@@ -22,6 +25,8 @@ class BookingController extends Controller
 
     public function store(StoreBookingRequest $request)
     {
+        $bookingHelper = app(BookingHelper::class);
+
         Booking::query()->create(
             array_merge(
                 $request->validate([
@@ -29,7 +34,10 @@ class BookingController extends Controller
                     'start_date' => 'required|date|after:today',
                     'end_date' => 'required|date|after:start_date',
                 ]),
-                ['user_id' => auth()->user()->id]
+                [
+                    'user_id' => auth()->user()->id,
+                    'cost' => (float) $bookingHelper->calculateBookingCost($request['start_date'], $request['end_date']),
+                ]
             )
         );
 
@@ -41,13 +49,15 @@ class BookingController extends Controller
         return view('bookings.edit', compact('booking'));
     }
 
-    public function update(Request $request, Booking $booking)
+    public function update(UpdateBookingRequest $request, Booking $booking)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'vehicle_id' => 'required|exists:vehicles,id',
+            'start_date' => 'required|date|after:today',
+            'end_date' => 'required|date|after:start_date',
         ]);
 
-        $booking->update($request->only('title'));
+        $booking->update($request->only('vehicle_id','start_date','end_date'));
 
         return redirect()->route('bookings.home');
     }
@@ -68,6 +78,10 @@ class BookingController extends Controller
             $end_date
         );
 
-        return response()->json(['total_bookings' => $total_bookings]);
+        return response()->json([
+            'spaces_left' => config('carpark.spaces') - $total_bookings,
+            'total_bookings' => $total_bookings
+        ]);
     }
+
 }

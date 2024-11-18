@@ -35,9 +35,9 @@ Route::middleware(['auth'])
         Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.home');
         Route::get('/bookings/create', [BookingController::class,'create'])->name('bookings.create');
         Route::post('/bookings/create', [BookingController::class,'store'])->name('bookings.store');
-        Route::get('/bookings/edit/{vehicle}', [BookingController::class,'edit'])->name('bookings.edit');
-        Route::post('/bookings/edit/{vehicle}', [BookingController::class,'update'])->name('bookings.update');
-        Route::get('/bookings/delete/{vehicle}', [BookingController::class,'destroy'])->name('bookings.destroy');
+        Route::get('/bookings/edit/{booking}', [BookingController::class,'edit'])->name('bookings.edit');
+        Route::post('/bookings/edit/{booking}', [BookingController::class,'update'])->name('bookings.update');
+        Route::get('/bookings/delete/{booking}', [BookingController::class,'destroy'])->name('bookings.destroy');
     });
 
 require __DIR__.'/auth.php';

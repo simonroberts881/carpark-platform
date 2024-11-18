@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
 
         // Client User
         User::factory()->has(
-            Vehicle::factory()
+            Vehicle::factory(['title' => 'John Doe - Vehicle'])
         )->create([
             'name' => 'John Doe',
             'email' => 'john@example.com'

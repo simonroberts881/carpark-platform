@@ -18,9 +18,9 @@ class ApiTest extends TestCase
     /**
      * A basic feature test example.
      */
-    #[NoReturn] public function test_calculate_bookings_between_dates(): void
+    #[NoReturn]
+    public function test_calculate_bookings_between_dates(): void
     {
-        // Create booking
         $user = User::factory()->create();
 
         $booking = Booking::factory(2)
@@ -33,6 +33,8 @@ class ApiTest extends TestCase
 
         $response = $this->post('/api/bookings?start_date=2024-11-01&end_date=2024-12-01');
         $response->assertJsonFragment(['total_bookings' => 2]);
-        
+
     }
+
+
 }

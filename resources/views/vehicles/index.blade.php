@@ -37,7 +37,6 @@
                             </div>
                         @endforeach
                         </div>
-
                     @else
                         <div class="text-center">
                             <svg class="mx-auto size-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

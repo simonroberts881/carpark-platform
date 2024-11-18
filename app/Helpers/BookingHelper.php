@@ -1,19 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Helpers;
 
 use App\Models\Booking;
 use Carbon\Carbon;
 
 class BookingHelper
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+
+    public int $cost_per_day = 15;
+    public int $spaces = 10;
 
     public function calculateParkingSpacesTaken($startDate, $endDate): int
     {
@@ -30,5 +26,22 @@ class BookingHelper
         })->get();
 
         return $bookings->count();
+    }
+
+    public function calculateParkingSpacesAvailable($startDate, $endDate): int
+    {
+        $total_spaces = $this->spaces;
+        return $total_spaces - $this->calculateParkingSpacesTaken($startDate, $endDate);
+    }
+
+    public function calculateBookingCost($startDate, $endDate): float
+    {
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+
+        $days = $start->diffInDays($end);
+        $per_day_cost = $this->cost_per_day;
+
+        return $days * $per_day_cost;
     }
 }
